@@ -1,5 +1,4 @@
-# design-pattern 
-# 设计模式
+# design-pattern (设计模式)
 ### software design pattern implement by go
 ### 用go语言实现的设计模式
 
