@@ -2,6 +2,7 @@
 // Created by hexiaomin on 2019/4/14.
 //
 // 工厂模式属于创建型模式，它提供了一种创建对象的最佳方式
+
 package factroy
 
 import "fmt"

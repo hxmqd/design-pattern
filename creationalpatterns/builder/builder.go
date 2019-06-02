@@ -2,6 +2,7 @@
 // Created by hexiaomin on 2019/4/14.
 //
 //建造者模式（Builder Pattern）使用多个简单的对象一步一步构建成一个复杂的对象
+
 package builder
 
 import "fmt"
