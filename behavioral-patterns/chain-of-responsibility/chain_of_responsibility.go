@@ -4,7 +4,9 @@
 
 package chain_of_responsibility
 
-import "fmt"
+import (
+	"fmt"
+)
 
 const (
 	INFO  = 1
@@ -18,26 +20,30 @@ type Logger interface {
 	Write(message string)
 }
 
+type Writer interface {
+	Write(message string)
+}
+
 // 抽象记录器结构体
 type AbstractLogger struct {
+	Writer
 	level int
 	nextLogger Logger
 }
 
-func (a *AbstractLogger)setNextLogger(nextLogger Logger){
+func (a *AbstractLogger)SetNextLogger(nextLogger Logger){
 	a.nextLogger = nextLogger
 }
 
 func (a *AbstractLogger)LogMessage(level int, message string){
-	if a.level < level {
-		a.Write(message)
+	if a.level <= level {
+		a.Writer.Write(message)
 	}
 	if a.nextLogger != nil {
 		a.nextLogger.LogMessage(level, message)
 	}
 }
 
-func (a *AbstractLogger)Write(message string){}
 
 // 控制台日志记录器
 type ConsoleLogger struct {
@@ -49,7 +55,9 @@ func (a *ConsoleLogger)Write(message string){
 }
 
 func NewConsoleLogger(level int) *ConsoleLogger{
-	return &ConsoleLogger{AbstractLogger{level:level}}
+	logger := &ConsoleLogger{}
+	logger.AbstractLogger = AbstractLogger{level:level, Writer:logger}
+	return logger
 }
 
 // 错误日志记录器
@@ -57,12 +65,14 @@ type ErrorLogger struct {
 	AbstractLogger
 }
 
-func (a *ErrorLogger)Write(message string){
+func (e *ErrorLogger)Write(message string){
 	fmt.Println("error console :: logger:"+message)
 }
 
 func NewErrorLogger(level int) *ErrorLogger{
-	return &ErrorLogger{AbstractLogger{level:level}}
+	logger := &ErrorLogger{}
+	logger.AbstractLogger = AbstractLogger{level:level, Writer:logger}
+	return logger
 }
 
 // 错误日志记录器
@@ -70,12 +80,25 @@ type FileLogger struct {
 	AbstractLogger
 }
 
-func (a *FileLogger)Write(message string){
+func (f *FileLogger)Write(message string){
 	fmt.Println("file :: logger:"+message)
 }
 
 func NewFileLogger(level int) *FileLogger{
-	return &FileLogger{AbstractLogger{level:level}}
+	logger := &FileLogger{}
+	logger.AbstractLogger = AbstractLogger{level:level, Writer:logger}
+	return logger
+}
+
+func GetChainOfLoggers() Logger{
+	errorLogger := NewErrorLogger(ERROR)
+	fileLogger := NewFileLogger(DEBUG)
+	consoleLogger := NewConsoleLogger(INFO)
+
+	errorLogger.SetNextLogger(fileLogger)
+	fileLogger.SetNextLogger(consoleLogger)
+
+	return errorLogger
 }
 
 
