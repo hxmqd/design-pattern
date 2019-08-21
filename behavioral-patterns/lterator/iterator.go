@@ -1,3 +1,5 @@
+// 模式用于顺序访问集合对象的元素，不需要知道集合对象的底层表示
+
 package lterator
 
 type Iterator interface {
