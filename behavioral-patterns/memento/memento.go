@@ -8,13 +8,13 @@ type Memento struct {
 	state string
 }
 
-func NewMemento(state string) *Memento{
+func NewMemento(state string) *Memento {
 	return &Memento{
 		state: state,
 	}
 }
 
-func (m *Memento)GetState() string{
+func (m *Memento) GetState() string {
 	return m.state
 }
 
@@ -22,23 +22,23 @@ type Originator struct {
 	state string
 }
 
-func NewOriginator() *Originator{
+func NewOriginator() *Originator {
 	return &Originator{}
 }
 
-func (o *Originator)SetState(state string){
+func (o *Originator) SetState(state string) {
 	o.state = state
 }
 
-func (o *Originator)GetState()string{
+func (o *Originator) GetState() string {
 	return o.state
 }
 
-func (o *Originator)SaveStateToMemento() *Memento{
-	return &Memento{state:o.state}
+func (o *Originator) SaveStateToMemento() *Memento {
+	return &Memento{state: o.state}
 }
 
-func (o *Originator)GetStateFromMemento(memento *Memento) {
+func (o *Originator) GetStateFromMemento(memento *Memento) {
 	o.state = memento.GetState()
 }
 
@@ -46,16 +46,16 @@ type CareTaker struct {
 	mementoList []*Memento
 }
 
-func NewCareTaker() *CareTaker{
+func NewCareTaker() *CareTaker {
 	return &CareTaker{
 		mementoList: make([]*Memento, 0),
 	}
 }
 
-func (c *CareTaker) Add(state *Memento){
+func (c *CareTaker) Add(state *Memento) {
 	c.mementoList = append(c.mementoList, state)
 }
 
-func (c *CareTaker) Get(index int) *Memento{
+func (c *CareTaker) Get(index int) *Memento {
 	return c.mementoList[index]
 }
