@@ -27,7 +27,6 @@ func (s *Subject) NotifyAllObservers(){
 	}
 }
 
-
 type IObserver interface {
 	Update()
 }
